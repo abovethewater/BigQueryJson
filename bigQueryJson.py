@@ -3,12 +3,19 @@
 import fileinput
 import sys
 
+firstLine = True
 bracketOpen = False
 isAlreadyJSON = False
 
 for line in fileinput.input():
 
-  if fileinput.isfirstline():
+  line = line.strip()
+
+  if len(line) is 0:
+    continue
+
+  if firstLine is True:
+    firstLine = False
     if line[0] != '[':
       bracketOpen = True
       sys.stdout.write('[')
