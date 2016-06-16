@@ -3,16 +3,27 @@
 import fileinput
 import sys
 
-firstline = True
+bracketOpen = False
+isAlreadyJSON = False
 
 for line in fileinput.input():
-    if firstline:
-      firstline = False
+
+  if fileinput.isfirstline():
+    if line[0] != '[':
+      bracketOpen = True
       sys.stdout.write('[')
     else:
-      sys.stdout.write(',\n')
+      isAlreadyJSON = True
+  else:
+    if isAlreadyJSON is False:
+      sys.stdout.write(',')
+    sys.stdout.write('\n')
 
-    sys.stdout.write(line.strip('\n'))
+  sys.stdout.write(line.strip('\n'))
 
-if firstline is False:
-  sys.stdout.write(']\n')
+if bracketOpen is True:
+  sys.stdout.write(']')
+
+sys.stdout.write('\n')
+
+sys.stdout.flush()
